@@ -1,0 +1,69 @@
+<div class="filters">
+  <mat-form-field appearance="outline">
+    <mat-label>Catégorie</mat-label>
+    <mat-select [(ngModel)]="selectedCategory">
+      <mat-option value="All">Tous</mat-option>
+      <mat-option value="Food">Nourriture</mat-option>
+      <mat-option value="Medecine">Médicaments</mat-option>
+      <mat-option value="Books">Livres</mat-option>
+      <mat-option value="Electric">Électrique</mat-option>
+      <mat-option value="Parfum">Parfum</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="products-container">
+  @for (p of filteredProducts(); track p.id) {
+    <mat-card class="product-card">
+      <mat-card-header>
+        <mat-card-title>{{ p.productName? p.productName: "unnamed" }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ p.category }}
+          <p class="price">
+            Prix HT : {{ p.price | currency:'EUR':'symbol':'1.2-2' }}<br />
+            <!--Prix TTC : {{ p.priceTtc | currency:'EUR':'symbol':'1.2-2' }}-->
+          </p>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="stock" [class.unavailable]="p.quantity === 0">
+          @if (p.quantity > 0) {
+            Stock : {{ p.quantity }}
+          } @else {
+            <strong>Non disponible</strong>
+          }
+        </p>
+
+        <div class="qty-container">
+          @if (p.quantity > 0) {
+            <mat-form-field appearance="outline">
+              <mat-label>Quantité</mat-label>
+              <input
+                matInput
+                type="number"
+                min="1"
+                [max]="p.quantity"
+                [(ngModel)]="selectedQty[p.id]"
+                (ngModelChange)="onQtyChange(p)"
+              />
+            </mat-form-field>
+          } @else {
+            <div class="qty-placeholder"></div>
+          }
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="addToCart(p)"
+          [disabled]="isAddDisabled(p)"
+        >
+          Ajouter au panier
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  }
+</div>

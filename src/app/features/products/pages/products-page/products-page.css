@@ -1,0 +1,32 @@
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.stock.unavailable {
+  color: red;
+}
+
+.qty-container {
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.qty-placeholder {
+  height: 56px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .products-container {
+    grid-template-columns: 1fr;
+  }
+}

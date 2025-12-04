@@ -7,6 +7,6 @@ const serverConfig: ApplicationConfig = {
   providers: [
     provideServerRendering(withRoutes(serverRoutes))
   ]
-};
+}
 
 export const config = mergeApplicationConfig(appConfig, serverConfig);
