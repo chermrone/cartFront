@@ -1,11 +1,20 @@
-<div class="filters">
-  <mat-form-field appearance="outline">
+<div
+  class="filters"
+  aria-label="Filtres de produits"
+>
+  <mat-form-field
+    appearance="outline"
+    floatLabel="always"
+    class="category-field"
+  >
     <mat-label>Catégorie</mat-label>
+
     <mat-select
       [value]="selectedCategory()"
       (valueChange)="onCategoryChange($event)"
+      aria-labelledby="category-filter-label"
     >
-      <mat-option value="All">Toutes</mat-option>
+      <mat-option id="category-filter-label" value="All">Toutes</mat-option>
       <mat-option value="Food">Nourriture</mat-option>
       <mat-option value="Medecine">Médicaments</mat-option>
       <mat-option value="Books">Livres</mat-option>

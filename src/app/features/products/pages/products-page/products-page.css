@@ -1,3 +1,14 @@
+.filters {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.category-field {
+  max-width: 260px;
+  width: 100%;
+}
+
 .products-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
