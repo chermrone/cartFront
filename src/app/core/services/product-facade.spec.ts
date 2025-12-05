@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ProductFacade } from './product-facade';
+import { ProductFacadeService} from './product-facade-service';
 import { ProductService } from './product-service';
 import { TaxService } from './tax-service';
 import { signal } from '@angular/core';
@@ -27,17 +27,17 @@ class ProductServiceStub {
 }
 
 describe('ProductFacade', () => {
-  let facade: ProductFacade;
+  let facade: ProductFacadeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        ProductFacade,
+        ProductFacadeService,
         TaxService,
         { provide: ProductService, useClass: ProductServiceStub },
       ],
     });
-    facade = TestBed.inject(ProductFacade);
+    facade = TestBed.inject(ProductFacadeService);
   });
 
   it('doit retourner tous les produits quand la catégorie = All', () => {

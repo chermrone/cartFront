@@ -14,7 +14,7 @@ import {MatButton} from '@angular/material/button';
 import {CurrencyPipe} from '@angular/common';
 import {MatOption, MatSelect, MatSelectModule} from '@angular/material/select';
 import {MatOptionModule} from '@angular/material/core';
-import {ProductFacade, ProductView} from '../../../../core/services/product-facade';
+import {ProductFacadeService, ProductView} from '../../../../core/services/product-facade-service';
 import {CardService} from '../../../../core/services/card-service';
 import {ProductCategory} from '../../../../core/models/product-category';
 import {MatSnackBar} from '@angular/material/snack-bar';
@@ -44,7 +44,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   styleUrl: './products-page.css',
 })
 export class ProductsPage {
-  private facade = inject(ProductFacade);
+  private facade = inject(ProductFacadeService);
   private cardService = inject(CardService);
   private snackBar = inject(MatSnackBar);
 

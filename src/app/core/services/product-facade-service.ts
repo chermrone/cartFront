@@ -1,4 +1,3 @@
-// core/services/product-facade.ts
 import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { Product } from '../models/product';
 import { ProductService } from './product-service';
@@ -11,7 +10,7 @@ export type ProductView = Product & {
 };
 
 @Injectable({ providedIn: 'root' })
-export class ProductFacade {
+export class ProductFacadeService {
   private productService = inject(ProductService);
   private taxService = inject(TaxService);
 

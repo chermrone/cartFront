@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ProductsPage } from './products-page';
-import { ProductFacade } from '../../../../core/services/product-facade';
+import {ProductFacadeService, ProductView} from '../../../../core/services/product-facade-service';
 import { CardService } from '../../../../core/services/card-service';
 import { signal } from '@angular/core';
-import { ProductView } from '../../../../core/services/product-facade';
 
 class ProductFacadeStub {
   viewProducts = signal<ProductView[]>([
@@ -36,14 +35,14 @@ describe('ProductsPage', () => {
     await TestBed.configureTestingModule({
       imports: [ProductsPage],
       providers: [
-        { provide: ProductFacade, useClass: ProductFacadeStub },
+        { provide: ProductFacadeService, useClass: ProductFacadeStub },
         { provide: CardService, useClass: CardServiceStub },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProductsPage);
     component = fixture.componentInstance;
-    facade = TestBed.inject(ProductFacade) as unknown as ProductFacadeStub;
+    facade = TestBed.inject(ProductFacadeService) as unknown as ProductFacadeStub;
     cardService = TestBed.inject(CardService) as unknown as CardServiceStub;
     fixture.detectChanges();
   });

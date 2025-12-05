@@ -172,7 +172,7 @@ this.snackBar.open(`${name} ajouté au panier`, 'OK', { duration: 3000 });
 
 ### 🔹 Architecture "Clean"
 
-* `ProductFacade` gère le filtrage + exposition du catalogue.
+* `ProductFacadeService` gère le filtrage + exposition du catalogue.
 * `CardService` encapsule toute la logique du panier.
 * `TaxService` calcule les prix TTC/taxes.
 
