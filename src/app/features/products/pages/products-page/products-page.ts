@@ -1,5 +1,4 @@
-import {Component, computed, effect, inject, OnInit, signal} from '@angular/core';
-import {ProductService} from '../../../../core/services/product-service';
+import {Component, inject} from '@angular/core';
 
 import {
   MatCard,
@@ -13,11 +12,11 @@ import {FormsModule} from '@angular/forms';
 import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {CurrencyPipe} from '@angular/common';
-import {TaxService} from '../../../../core/services/tax-service';
-import {Product} from '../../../../core/models/product';
-import {ProductCategory} from '../../../../core/models/cart-item';
 import {MatOption, MatSelect, MatSelectModule} from '@angular/material/select';
 import {MatOptionModule} from '@angular/material/core';
+import {ProductFacade, ProductView} from '../../../../core/services/product-facade';
+import {CardService} from '../../../../core/services/card-service';
+import {ProductCategory} from '../../../../core/models/product-category';
 
 @Component({
   selector: 'app-products-page',
@@ -44,44 +43,37 @@ import {MatOptionModule} from '@angular/material/core';
   styleUrl: './products-page.css',
 })
 export class ProductsPage {
-  private productService = inject(ProductService);
-  private taxService = inject(TaxService);
-  products = this.productService.products;
+  private facade = inject(ProductFacade);
+  private cartService = inject(CardService);
+
+  products = this.facade.viewProducts;
+  selectedCategory = this.facade.selectedCategory;
+
+  // quantité sélectionnée par produit (UI local state)
   selectedQty: Record<number, number> = {};
-  selectedCategory = signal<'All' | ProductCategory>('All');
 
-  filteredProducts = computed(() => {
-    const category = this.selectedCategory();
-    const list = this.products();
-
-    if (category === 'All') return list;
-
-    return list.filter(p => p.category === category);
-  });
-
-  // Produit enrichi avec priceTtc (signal calculé)
-  productsWithTtc = computed(() =>
-    this.products().map((p: Product) => ({
-      ...p,
-      priceTtc: this.taxService.getPriceTtc(p.price, p.category, p.isImported)
-    }))
-  );
-
-  onQtyChange(product: Product) {
-    const qty = this.selectedQty[product.id] ?? 0;
-    if (qty > product.quantity) this.selectedQty[product.id] = product.quantity;
-    if (qty < 1) this.selectedQty[product.id] = 0;
+  onCategoryChange(category: 'All' | ProductCategory): void {
+    this.facade.setCategory(category);
   }
 
-  isAddDisabled(product: Product): boolean {
+  onQtyChange(product: ProductView): void {
     const qty = this.selectedQty[product.id] ?? 0;
-    return qty <= 0 || qty > product.quantity;
+    if (qty > product.quantity) {
+      this.selectedQty[product.id] = product.quantity;
+    }
+    if (qty < 1) {
+      this.selectedQty[product.id] = 0;
+    }
   }
 
-  addToCart(product: Product) {
+  isAddDisabled(product: ProductView): boolean {
+    const qty = this.selectedQty[product.id] ?? 0;
+    return qty <= 0 || qty > product.quantity || product.quantity === 0;
+  }
+
+  addToCart(product: ProductView): void {
     const qty = this.selectedQty[product.id] ?? 0;
     if (this.isAddDisabled(product)) return;
-
-    console.log('Ajout au panier', product.productName, 'x', qty);
+    this.cartService.addItem(product, qty);
   }
 }

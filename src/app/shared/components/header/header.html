@@ -11,7 +11,7 @@
     mat-icon-button
     routerLink="/cart"
     routerLinkActive="active-link"
-    [matBadge]="totalQuantity$ | async"
+    [matBadge]="totalQuantity()"
     matBadgeColor="accent"
     matBadgeOverlap="false"
     aria-label="Ouvrir le panier"

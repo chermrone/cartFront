@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {MatToolbar} from '@angular/material/toolbar';
 import {MatBadge} from '@angular/material/badge';
 import {MatIcon} from '@angular/material/icon';
@@ -6,6 +6,7 @@ import {AsyncPipe} from '@angular/common';
 import {Observable, of} from 'rxjs';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {RouterLink, RouterLinkActive} from '@angular/router';
+import {CardService} from '../../../core/services/card-service';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,6 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
     MatToolbar,
     MatBadge,
     MatIcon,
-    AsyncPipe,
     MatButton,
     RouterLink,
     RouterLinkActive,
@@ -23,6 +23,7 @@ import {RouterLink, RouterLinkActive} from '@angular/router';
   styleUrl: './header.css',
 })
 export class Header {
-  protected totalQuantity$: Observable<number> = of(3) ;
+  private cartService = inject(CardService)
+  protected totalQuantity = this.cartService.totalQuantity;
 
 }

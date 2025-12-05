@@ -1,8 +1,11 @@
 <div class="filters">
   <mat-form-field appearance="outline">
     <mat-label>Catégorie</mat-label>
-    <mat-select [(ngModel)]="selectedCategory">
-      <mat-option value="All">Tous</mat-option>
+    <mat-select
+      [value]="selectedCategory()"
+      (valueChange)="onCategoryChange($event)"
+    >
+      <mat-option value="All">Toutes</mat-option>
       <mat-option value="Food">Nourriture</mat-option>
       <mat-option value="Medecine">Médicaments</mat-option>
       <mat-option value="Books">Livres</mat-option>
@@ -13,15 +16,15 @@
 </div>
 
 <div class="products-container">
-  @for (p of filteredProducts(); track p.id) {
+  @for (p of products(); track p.id) {
     <mat-card class="product-card">
       <mat-card-header>
-        <mat-card-title>{{ p.productName? p.productName: "unnamed" }}</mat-card-title>
+        <mat-card-title>{{ p.productName? p.productName: "no name" }}</mat-card-title>
         <mat-card-subtitle>
           {{ p.category }}
           <p class="price">
             Prix HT : {{ p.price | currency:'EUR':'symbol':'1.2-2' }}<br />
-            <!--Prix TTC : {{ p.priceTtc | currency:'EUR':'symbol':'1.2-2' }}-->
+            Prix TTC : {{ p.unitPriceTtc | currency:'EUR':'symbol':'1.2-2' }}
           </p>
         </mat-card-subtitle>
       </mat-card-header>

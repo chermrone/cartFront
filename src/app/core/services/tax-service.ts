@@ -1,6 +1,7 @@
 // tax.service.ts
 import { Injectable } from '@angular/core';
 import { TAX_RATES } from '../constants/tax-rates';
+import {ProductCategory} from '../models/product-category';
 
 @Injectable({ providedIn: 'root' })
 export class TaxService {
@@ -8,7 +9,7 @@ export class TaxService {
   /**
    * Calcul du prix TTC à partir des seules infos nécessaires.
    */
-  getPriceTtc(priceHt: number, category: string, imported: boolean): number {
+  getPriceTtc(priceHt: number, category: ProductCategory, imported: boolean): number {
     const taxes = this.getTaxes(priceHt, category, imported);
     const totalTax = taxes.reduce((sum, t) => sum + t, 0);
     return +(priceHt + totalTax).toFixed(2);
@@ -16,7 +17,7 @@ export class TaxService {
 
 
   // avoir le bon taxe selon la catégorie et si importé
-  private getTaxes(priceHt: number, category: string, imported: boolean): number[] {
+  private getTaxes(priceHt: number, category: ProductCategory, imported: boolean): number[] {
     // Liste des taxes applicables
     const taxes: number[] = [];
 
@@ -34,20 +35,18 @@ export class TaxService {
     return taxes;
   }
 
-  private getBaseRate(category: string): number {
-    const c = (category || '').toLowerCase();
-
+  private getBaseRate(category: ProductCategory): number {
     switch (category) {
-      case 'food':
-      case 'medecine':
+      case 'Food':
+      case 'Medecine':
         return TAX_RATES.UNTAXED;
-      case 'books':
+      case 'Books':
         return TAX_RATES.BOOKS;
       default:
         return TAX_RATES.OTHER;
     }
-
   }
+
 
   // Arrondi aux 5 centimes supérieurs
   private roundTo5CentsUp(amount: number): number {
