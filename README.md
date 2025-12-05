@@ -100,6 +100,11 @@ src/
  │    │     │             ├── header.component.html
  |    |     |             ├── header.component.spec.ts
  │    │     │             └── header.component.css
+ |    │     │      └── confirm-dialog/
+ │    │     │             ├── confirm-dialog.component.ts
+ │    │     │             ├── confirm-dialog.component.html
+ |    |     |             ├── confirm-dialog.component.spec.ts
+ │    │     │             └── confirm-dialog.component.css
  │    └── app.ts
  │    └── app.html
  |    └── app.spec.ts

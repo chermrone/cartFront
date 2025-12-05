@@ -5,7 +5,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {CardService} from '../../../../core/services/card-service';
-import {CardItem} from '../../../../core/models/./card-item';
+import {CardItem} from '../../../../core/models/card-item';
+import {MatDialog} from '@angular/material/dialog';
+import {
+  ConfirmDeleteData,
+  ConfirmDialogComponent
+} from '../../../../shared/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-card-page',
@@ -24,6 +29,7 @@ import {CardItem} from '../../../../core/models/./card-item';
 })
 export class CardPage {
   private cardService = inject(CardService);
+  private dialog = inject(MatDialog)
 
   cardItems = this.cardService.cardItems;
   totalTtc = this.cardService.totalTtc;
@@ -48,6 +54,22 @@ export class CardPage {
   }
 
   removeItem(item: CardItem): void {
-    this.cardService.removeItem(item.productItem.id);
+    const productName = item.productItem.productName || 'cet article';
+
+    const dialogRef = this.dialog.open<ConfirmDialogComponent, ConfirmDeleteData, boolean>(
+      ConfirmDialogComponent,
+      {
+        data: { name: productName },
+        width: '320px',
+        ariaDescribedBy: 'confirm-delete-description',
+      }
+    );
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        this.cardService.removeItem(item.productItem.id);
+      }
+    });
   }
+
 }
