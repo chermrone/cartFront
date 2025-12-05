@@ -17,6 +17,7 @@ import {MatOptionModule} from '@angular/material/core';
 import {ProductFacade, ProductView} from '../../../../core/services/product-facade';
 import {CardService} from '../../../../core/services/card-service';
 import {ProductCategory} from '../../../../core/models/product-category';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-products-page',
@@ -44,7 +45,8 @@ import {ProductCategory} from '../../../../core/models/product-category';
 })
 export class ProductsPage {
   private facade = inject(ProductFacade);
-  private cartService = inject(CardService);
+  private cardService = inject(CardService);
+  private snackBar = inject(MatSnackBar);
 
   products = this.facade.viewProducts;
   selectedCategory = this.facade.selectedCategory;
@@ -74,6 +76,18 @@ export class ProductsPage {
   addToCart(product: ProductView): void {
     const qty = this.selectedQty[product.id] ?? 0;
     if (this.isAddDisabled(product)) return;
-    this.cartService.addItem(product, qty);
+    this.cardService.addItem(product, qty);
+
+    // Feedback utilisateur accessible
+    this.snackBar.open(
+      `${product.productName || 'Article'} ajouté au panier`,
+      'OK',
+      {
+        duration: 3000,
+        horizontalPosition: 'right',
+        verticalPosition: 'bottom',
+        panelClass: ['cart-snackbar'],
+      }
+    );
   }
 }

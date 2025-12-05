@@ -35,6 +35,10 @@
   height: 56px;
 }
 
+.cart-snackbar {
+  font-size: 0.9rem;
+}
+
 /* Mobile */
 @media (max-width: 768px) {
   .products-container {

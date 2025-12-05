@@ -1,62 +1,183 @@
-# CartFront
+Voici un **README.md propre, complet et professionnel**, adapté pour **Angular 21**, **Standalone**, **Signals**, **Zoneless**, **Angular Material**, **Jest**, et ton architecture actuelle **Products + Cart**.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.2.
+Tu peux le coller directement dans ton repository Git.
 
-## Development server
+---
 
-To start a local development server, run:
+# 🛒 Cart Kata – Angular 21 (Standalone • Signals • Zoneless • Material • Jest)
 
-```bash
-ng serve
+Ce projet est un **kata Angular 21** visant à démontrer une architecture moderne et propre autour d’un catalogue de produits, d’un panier d’achat, d’un filtrage dynamique, et d'une gestion des taxes.
+Le projet met l’accent sur les bonnes pratiques **UX/UI**, **accessibilité**, **reactivity avec Signals**, **composants standalone**, et **testing via Jest**.
+
+---
+
+## ✨ Fonctionnalités principales
+
+### 📦 Produits
+
+* Affichage des produits sous forme de cartes.
+* Filtrage par catégorie via `mat-select`.
+* Affichage des prix HT / TTC + taxes.
+* Stock visible et gestion du stock épuisé.
+* Sélecteur de quantité avec validation dynamique.
+* Bouton *Ajouter au panier* intelligent (désactivé si invalide).
+
+### 🛒 Panier
+
+* Ajout d’articles avec Signal `cardItems`.
+* Fusion des quantités si le produit existe déjà.
+* Calcul automatique :
+
+  * Total TTC
+  * Quantité totale
+* Suppression d’un produit du panier.
+* Exposition des totaux via `computed()`.
+
+### 🎨 UI / UX / Accessibilité
+
+* UI construite avec **Angular Material**.
+* Layout Responsive : grille 3 colonnes → 1 colonne mobile.
+* Toast (`MatSnackBar`) lors de l’ajout au panier.
+* Labels non tronqués grâce à `floatLabel="always"`.
+* A11y :
+
+  * aria-label / aria-labelledby
+  * focus, messages toast accessibles
+  * contrôle clair des états disabled
+
+### ⚡ Angular moderne
+
+* **Standalone Components**
+* **Signals** (`signal`, `computed`)
+* **Control Flow syntax** :
+
+  ```html
+  @for (...)
+  @if (...)
+  ```
+* **Zoneless** (amélioration performance)
+* **Typed Forms / ngModel compatible signals**
+* **HttpClient standalone**
+
+---
+
+## 🏗️ Architecture du projet
+
+```
+public/
+ └── products.json
+src/
+ ├── app/
+ │    ├── features/
+ │    │     ├── products/
+ │    │     │      ├── products-page.ts
+ │    │     │      ├── products-page.html
+ │    │     │      ├── products-page.spec.ts
+ │    │     │      └── products-page.css
+ │    │     └── card/
+ │    │            ├── card-page.ts
+ │    │            ├── card-page.html
+ │    │            ├── card-page.spec.ts 
+ │    │            └── card-page.css
+ │    ├── core/
+ │    │     ├── services/
+ │    │     │      ├── product-facade-service.ts
+ |    |     |      ├── product-facade-service.spec.ts
+ │    │     │      ├── card-service.ts
+ │    │     │      ├── card-service.spec.ts
+ │    │     │      ├── tax-service.ts
+ │    │     │      └── tax-service.spec.ts
+ │    │     ├── models/
+ │    │     │      ├── product.ts
+ │    │     │      ├── product-category.ts
+ │    │     │      └── card-item.ts
+ |    |     |── constants/
+ │    │            └── tax-rates.ts
+ │    ├── shared/
+ │    │     ├── components/
+ │    │     │      └── header/
+ │    │     │             ├── header.component.ts
+ │    │     │             ├── header.component.html
+ |    |     |             ├── header.component.spec.ts
+ │    │     │             └── header.component.css
+ │    └── app.ts
+ │    └── app.html
+ |    └── app.spec.ts
+ │    └── app.css
+ │    └── app.routes.ts
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📥 Installation
 
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
+
+## ▶️ Démarrer l'application
 
 ```bash
-ng generate --help
+npm start
 ```
 
-## Building
+L’application sera accessible sur :
 
-To build the project run:
+```
+http://localhost:4200/
+```
+
+---
+
+## 🧪 Tests – Jest (Angular 21)
+
+Le projet utilise **Jest** comme framework de tests unitaires, incluant le preset Angular officiel.
+
+### 📌 Lancer les tests
 
 ```bash
-ng build
+npm test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### 📌 Couverture
 
 ```bash
-ng test
+npm run test:coverage
+```
+---
+
+## 🧠 Points techniques importants
+
+### 🔹 Signals (Angular Reactivity nouvelle génération)
+
+* Remplace `BehaviorSubject` / `RxJS` pour la majorité des cas.
+* Mis à jour instantanée du DOM sans zone.js.
+
+### 🔹 Zoneless
+
+* Meilleures performances.
+* Requiert une gestion de réactivité propre (signals).
+
+### 🔹 Material Design
+
+* UI cohérente.
+* Accessibilité robuste.
+* Toast avec `MatSnackBar` :
+
+```ts
+this.snackBar.open(`${name} ajouté au panier`, 'OK', { duration: 3000 });
 ```
 
-## Running end-to-end tests
+### 🔹 Architecture "Clean"
 
-For end-to-end (e2e) testing, run:
+* `ProductFacade` gère le filtrage + exposition du catalogue.
+* `CardService` encapsule toute la logique du panier.
+* `TaxService` calcule les prix TTC/taxes.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 👤 Auteur
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-=======
-# cartFront
-Frontend Angular d’une application de gestion de panier (kata) : liste des produits, filtrage, pagination, calcul des taxes.
+Développé dans le cadre d’une évaluation technique / kata Angular avancé.
