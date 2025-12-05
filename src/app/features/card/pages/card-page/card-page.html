@@ -15,7 +15,7 @@
         <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef> Nom article </th>
           <td mat-cell *matCellDef="let item">
-            {{ item.productItem.productName }}
+            {{ item.productItem.productName? item.productItem.productName: 'no name'  }}
           </td>
         </ng-container>
 
